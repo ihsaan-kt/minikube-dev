@@ -1,0 +1,42 @@
+replicaCount: 1
+
+image:
+  repository: nginx-minikube
+  pullPolicy: IfNotPresent
+  # Tag corresponds to the version of the Docker image
+tag: latest
+
+service:
+  type: ClusterIP
+  port: 80
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+aws-for-fluent-bit:
+  cloudWatch:
+    enabled: true
+    region: us-west-2               # or your AWS region
+    logGroupName: "/minikube/nginx" # choose a log group name
+    autoCreateGroup: true
+  serviceAccount:
+    create: true
+    annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::<your-account-id>:role/<your-role-name>
+    env:
+    - name: AWS_ACCESS_KEY_ID
+      valueFrom:
+        secretKeyRef:
+          name: aws-creds
+          key: aws_access_key_id
+    - name: AWS_SECRET_ACCESS_KEY
+      valueFrom:
+        secretKeyRef:
+          name: aws-creds
+          key: aws_secret_access_key
+

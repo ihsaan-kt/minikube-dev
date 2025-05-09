@@ -1,0 +1,8 @@
+apiVersion: v2
+name: nginx-minikube
+version: 0.1.0
+dependencies:             # ← add both here
+  - name: aws-for-fluent-bit
+    version: "0.1.35"
+    repository: "https://aws.github.io/eks-charts"
+
